@@ -1,7 +1,12 @@
-# Set default behavior to automatically normalize line endings.
+# Handle line endings automatically
 * text=auto
 
-# Explicitly set line endings for specific file types (if needed)
+# Explicit line endings
 *.js text eol=lf
+*.css text eol=lf
+*.html text eol=lf
 *.json text eol=lf
+*.env text eol=lf
+*.ejs text eol=lf
 *.md text eol=lf
+*.yml text eol=lf

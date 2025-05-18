@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
+const dbgr = require('debug')('development:db');
 require('dotenv').config();
 
 const connectDB = async () => {
     try {
-        const conn = await mongoose.connect(process.env.MONGO_URL);
-        console.log(`MongoDB connected: ${conn.connection.host}`);
+        const conn = await mongoose.connect(`${process.env.MONGO_URL}/snapshelf`);
+        dbgr(`MongoDB connected: ${conn.connection.host}`);
     } catch (err) {
-        console.error(`Error: ${err.message}`);
+        dbgr(`Error: ${err.message}`);
         process.exit(1); // Exit process if DB connection fails
     }
 };

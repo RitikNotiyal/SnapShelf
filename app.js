@@ -4,6 +4,7 @@ const ejs = require('ejs');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./configs/db');
 require('dotenv').config();
+const debug = require('debug')('development:app');
 const adminRoutes = require('./routes/adminRoutes');
 const productsRoutes = require('./routes/productsRoutes');
 const usersRoutes = require('./routes/usersRoutes');
@@ -14,7 +15,7 @@ const app = express();
 connectDB();
 
 //  Set View Engine
-app.set('view engine', 'ejs');
+app.set('view engine', ejs);
 
 //  Middleware
 app.use(express.json());
@@ -24,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //  Logger Middleware
 app.use((req, res, next) => {
-    console.log(`${req.method} ${req.url}`);
+    debug(`${req.method} ${req.url}`);
     next();
 });
 
@@ -40,5 +41,5 @@ app.use('/users', usersRoutes);
 // Server Listen
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    debug(`Server is running on port ${PORT}`);
 });

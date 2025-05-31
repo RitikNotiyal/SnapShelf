@@ -8,14 +8,14 @@ const debug = require('debug')('development:app');
 const adminRoutes = require('./routes/adminRoutes');
 const productsRoutes = require('./routes/productsRoutes');
 const usersRoutes = require('./routes/usersRoutes');
-
+const indexRoutes = require('./routes/index');
 const app = express();
 
 //  Connect to DB
 connectDB();
 
 //  Set View Engine
-app.set('view engine', ejs);
+app.set('view engine', 'ejs');
 
 //  Middleware
 app.use(express.json());
@@ -30,13 +30,15 @@ app.use((req, res, next) => {
 });
 
 //  Routes
-app.get('/', (req, res) => {
-    res.send('Hey');
-});
+// app.get('/', (req, res) => {
+//     res.send('Hey');
+// });
 
+app.use('/', indexRoutes);
 app.use('/admin', adminRoutes);
 app.use('/products', productsRoutes);
 app.use('/users', usersRoutes);
+
 
 // Server Listen
 const PORT = process.env.PORT || 5000;

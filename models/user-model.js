@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const userSchema = mongoose.Schema({
     fullname: {
@@ -21,6 +22,12 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
         minlength: 6,
+        validate: {
+            validator: function (v) {
+                return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/.test(v);
+            },
+            message: (props) => 'Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number.',
+        },
     },
     phone: {
         type: String,
@@ -44,10 +51,6 @@ const userSchema = mongoose.Schema({
             },
         },
     ],
-    isAdmin: {
-        type: Boolean,
-        default: false,
-    },
     order: {
         type: Array,
         default: [],
@@ -56,6 +59,12 @@ const userSchema = mongoose.Schema({
         type: String,
         default: '',
     },
+});
+
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) return next();
+    this.password = await bcrypt.hash(this.password, 10);
+    next();
 });
 
 module.exports = mongoose.model('user', userSchema);

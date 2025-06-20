@@ -2,11 +2,17 @@ const express = require('express');
 const router = express.Router();
 const adminModel = require('../models/admin-model');
 const avatarUrl = require('../utils/avatar');
+const productsModel = require('../models/product-model');
 
-router.get('/', (req, res) => {
-    res.send('Admin Home');
+
+router.get('/', async (req, res) => {
+    try {
+        const products = await productsModel.find();
+        res.render('admin', { products });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
-
 
 if (process.env.NODE_ENV === 'development') {
     router.post('/create', async (req, res) => {
@@ -32,12 +38,16 @@ if (process.env.NODE_ENV === 'development') {
 
             res.status(201).send(admin);
 
-            
+
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
     });
 }
+
+router.get('/owners', (req, res) => {
+    res.render('createproducts');
+});
 
 // This route is for testing purposes only
 router.delete('/delete', async (req, res) => {

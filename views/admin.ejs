@@ -1,113 +1,133 @@
 <%- include('./partials/header') %>
-    <div class="w-full h-screen flex items-start px-20 py-20">
-        <div class="w-[25%] flex h-screen flex-col items-start">
-            <div class="flex flex-col">
-                <a class="block w-fit mb-2" href="">All Products</a>
-                <a class="block w-fit mb-2" href="">Create new product</a>
-            </div>
-        </div>
-        <div class="w-[75%] flex flex-col gap-5 h-screen">
-            <a class="text-red-500" href="">Delete all</a>
-            <div class="flex items-start gap-5">
-                <div class="w-60 bg-red-500">
-                    <div class="w-full h-52 bg-yellow-500"></div>
-                    <div class="flex justify-between items-center px-4 py-4">
-                        <div>
-                            <h3>Clinge Bag</h3>
-                            <h4>₹ 1200</h4>
-                        </div>
-                        <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="">
-                            <i class="ri-add-line"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="w-60 bg-red-500">
-                    <div class="w-full h-52 bg-yellow-500"></div>
-                    <div class="flex justify-between items-center px-4 py-4">
-                        <div>
-                            <h3>Clinge Bag</h3>
-                            <h4>₹ 1200</h4>
-                        </div>
-                        <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="">
-                            <i class="ri-add-line"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="w-60 bg-red-500">
-                    <div class="w-full h-52 bg-yellow-500"></div>
-                    <div class="flex justify-between items-center px-4 py-4">
-                        <div>
-                            <h3>Clinge Bag</h3>
-                            <h4>₹ 1200</h4>
-                        </div>
-                        <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="">
-                            <i class="ri-add-line"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="w-60 bg-red-500">
-                    <div class="w-full h-52 bg-yellow-500"></div>
-                    <div class="flex justify-between items-center px-4 py-4">
-                        <div>
-                            <h3>Clinge Bag</h3>
-                            <h4>₹ 1200</h4>
-                        </div>
-                        <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="">
-                            <i class="ri-add-line"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="flex items-start gap-5">
-                <div class="w-60 bg-red-500">
-                    <div class="w-full h-52 bg-yellow-500"></div>
-                    <div class="flex justify-between items-center px-4 py-4">
-                        <div>
-                            <h3>Clinge Bag</h3>
-                            <h4>₹ 1200</h4>
-                        </div>
-                        <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="">
-                            <i class="ri-add-line"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="w-60 bg-red-500">
-                    <div class="w-full h-52 bg-yellow-500"></div>
-                    <div class="flex justify-between items-center px-4 py-4">
-                        <div>
-                            <h3>Clinge Bag</h3>
-                            <h4>₹ 1200</h4>
-                        </div>
-                        <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="">
-                            <i class="ri-add-line"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="w-60 bg-red-500">
-                    <div class="w-full h-52 bg-yellow-500"></div>
-                    <div class="flex justify-between items-center px-4 py-4">
-                        <div>
-                            <h3>Clinge Bag</h3>
-                            <h4>₹ 1200</h4>
-                        </div>
-                        <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="">
-                            <i class="ri-add-line"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="w-60 bg-red-500">
-                    <div class="w-full h-52 bg-yellow-500"></div>
-                    <div class="flex justify-between items-center px-4 py-4">
-                        <div>
-                            <h3>Clinge Bag</h3>
-                            <h4>₹ 1200</h4>
-                        </div>
-                        <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="">
-                            <i class="ri-add-line"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="w-full h-screen flex items-start px-20 py-20">
+  <div class="w-[25%] flex h-screen flex-col items-start">
+    <div class="flex flex-col">
+      <a class="block w-fit mb-2" href="/admin">All Products</a>
+      <a class="block w-fit mb-2" href="/admin/owners">Create new product</a>
     </div>
-    <%- include('./partials/footer') %>
+  </div>
+  <div class="w-[75%] flex flex-col gap-5 h-screen">
+    <div
+      id="alert-message"
+      class="hidden mb-4 px-4 py-2 rounded border text-sm font-medium"
+    ></div>
+    <button class="text-2xl font-bold mb-4 w-fit" onclick="deleteAllProducts()">
+      <i class="ri-delete-bin-5-fill"></i>
+      Delete All
+    </button>
+    <div class="flex items-start flex-wrap gap-5">
+      <% if (products.length <= 0) { %>
+      <div class="w-full h-full flex items-center justify-center">
+        <h3 class="text-2xl">No products found</h3>
+      </div>
+      <% } else { %> <% products.forEach(function(product) { %>
+      <div class="w-60" id="product-<%= product._id %>">
+        <div
+          class="w-full h-52 flex items-center justify-center bg-[<%= product.bgColor %>]"
+        >
+          <img
+            class="h-[12rem]"
+            src="data:image/jpeg;base64,<%= product.image.toString('base64') %>"
+            alt=""
+          />
+        </div>
+        <div
+          class="flex justify-between bg-[<%= product.panelColor %>] items-center px-4 py-4 text-[<%= product.textColor %>]"
+        >
+          <div>
+            <h3><%= product.name %></h3>
+            <h4>₹ <%= product.price %></h4>
+          </div>
+          <button
+            class="w-7 h-7 flex items-center justify-center rounded-full bg-white"
+            onclick="deleteProduct('<%= product._id %>')"
+          >
+            <i class="ri-delete-bin-6-fill"></i>
+          </button>
+        </div>
+      </div>
+      <% }); %> <% } %>
+    </div>
+  </div>
+</div>
+
+<script>
+  async function deleteProduct(id) {
+    if (!confirm("Are you sure you want to delete this product?")) return;
+
+    try {
+      const res = await fetch(`/products/delete/${id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        // ✅ Remove the deleted product card from DOM
+        document.getElementById(`product-${id}`).remove();
+
+        // ✅ Show success message
+        showAlert("✅ " + data.message, "success");
+      } else {
+        // ❌ Show error message
+        showAlert("❌ " + (data.error || "Delete failed"), "error");
+      }
+    } catch (err) {
+      showAlert("❌ Network error. Try again.", "error");
+    }
+  }
+
+  // Function to delete all products
+  async function deleteAllProducts() {
+    const products = document.querySelectorAll('[id^="product-"]');
+
+    if (products.length <= 0) {
+      showAlert("❌ No products to delete", "error");
+      return;
+    }
+    if (!confirm("Are you sure you want to delete all products?")) return;
+    try {
+      const res = await fetch("/products/deleteAll", {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (res.ok) {
+        // ✅ Remove the deleted product card from DOM
+        document.getElementById(`product-${id}`).remove();
+
+        // ✅ Show success message
+        showAlert("✅ " + data.message, "success");
+      } else {
+        // ❌ Show error message
+        showAlert("❌ " + (data.error || "Delete failed"), "error");
+      }
+      location.reload();
+    } catch (err) {
+      showAlert("❌ Network error. Try again.", "error");
+    }
+  }
+
+  function showAlert(message, type) {
+    const alertDiv = document.getElementById("alert-message");
+    alertDiv.textContent = message;
+    alertDiv.className = "mb-4 px-4 py-2 rounded border text-sm font-medium";
+
+    if (type === "success") {
+      alertDiv.classList.add(
+        "bg-green-100",
+        "text-green-800",
+        "border-green-300"
+      );
+    } else {
+      alertDiv.classList.add("bg-red-100", "text-red-800", "border-red-300");
+    }
+
+    alertDiv.classList.remove("hidden");
+
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+      alertDiv.classList.add("hidden");
+    }, 3000);
+  }
+</script>
+<%- include('./partials/footer') %>

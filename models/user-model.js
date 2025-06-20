@@ -24,14 +24,14 @@ const userSchema = mongoose.Schema({
         minlength: 6,
         validate: {
             validator: function (v) {
-                return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/.test(v);
+                return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/.test(v);
             },
             message: (props) => 'Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number.',
         },
     },
     phone: {
         type: String,
-        required: true,
+        required: false, // Optional field
         validate: {
             validator: function (v) {
                 return /^\d{10}$/.test(v);

@@ -25,7 +25,7 @@ const adminSchema = mongoose.Schema({
         type: String,
         required: true,
         minlength: 6,
-        match: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
+        match: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/,
 
     },
     phone: {

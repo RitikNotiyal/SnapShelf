@@ -45,16 +45,32 @@
             <h3><%= product.name %></h3>
             <h4>₹ <%= product.price %></h4>
           </div>
-          <a
+          <button
             class="w-7 h-7 flex items-center justify-center rounded-full bg-white"
-            href=""
+            onclick="addToCart('<%= product._id %>')"
+            title="Add to Cart"
           >
             <i class="ri-add-line"></i>
-          </a>
+          </button>
         </div>
       </div>
       <% }); %> <% } %>
     </div>
   </div>
 </div>
+<script>
+  function addToCart(productId) {
+    fetch(`/addtocart/${productId}`, {
+      method: "POST",
+      credentials: "include",
+    })
+      .then((res) => {
+        if (res.redirected) {
+          window.location.href = res.url;
+        }
+      })
+      .catch((err) => console.error(err));
+  }
+</script>
+
 <%- include('./partials/footer') %>

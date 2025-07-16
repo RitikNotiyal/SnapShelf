@@ -2,7 +2,7 @@ const { registerSchema, loginSchema } = require('../utils/validation_schema');
 const userModel = require('../models/user-model');
 const avatarUrl = require('../utils/avatar');
 const generateToken = require('../utils/jwt');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt'); 
 
 const registerController = async (req, res) => {
 try {

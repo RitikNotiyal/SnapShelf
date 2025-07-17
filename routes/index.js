@@ -46,11 +46,14 @@ router.get('/cart', iSAuthenticated, async (req, res) => {
 
                 // Ensure prices are numbers
                 const price = parseFloat(p.price) || 0;
-                const discountedPrice = parseFloat(p.discountedPrice) || 0;
+                const discount = parseFloat(p.discount) || 0;
+
+                // Calculate discounted price from price and discount
+                const discountedPrice = price - discount;
 
                 totalMRP += price * qty;
                 subtotal += discountedPrice * qty;
-                totalDiscount += (price - discountedPrice) * qty;
+                totalDiscount += discount * qty;
             });
         }
 
@@ -78,6 +81,34 @@ router.get('/cart', iSAuthenticated, async (req, res) => {
             totalAmount: "20.00",
             error: "Something went wrong"
         });
+    }
+});
+
+router.post('/cart/update-quantity', iSAuthenticated, async (req, res) => {
+    try {
+        const { productId, quantity } = req.body;
+
+        if (!req.user || !req.user._id) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+
+        const user = await User.findById(req.user._id);
+
+        const cartItem = user.cart.find(
+            (item) => item.productId.toString() === productId
+        );
+
+        if (!cartItem) {
+            return res.status(404).json({ message: 'Product not in cart' });
+        }
+
+        cartItem.quantity = quantity;
+        await user.save();
+
+        return res.json({ message: 'Cart updated successfully' });
+    } catch (err) {
+        console.error('Error updating quantity:', err);
+        return res.status(500).json({ message: 'Server error' });
     }
 });
 

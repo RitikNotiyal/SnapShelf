@@ -31,44 +31,51 @@ router.get('/cart', iSAuthenticated, async (req, res) => {
 
         // Constants
         const platformFee = 20;
-        const shippingFee = 0; // FREE
+        const shippingFee = 0;
 
-        // Calculate totals
+        // Initialize with default values
         let totalMRP = 0;
         let totalDiscount = 0;
         let subtotal = 0;
 
-        userCart.cart.forEach(item => {
-            const p = item.productId;
-            const qty = item.quantity;
+        // Only calculate if cart has items
+        if (userCart && userCart.cart && userCart.cart.length > 0) {
+            userCart.cart.forEach(item => {
+                const p = item.productId;
+                const qty = item.quantity || 1; // Default quantity to 1
 
-            totalMRP += p.price * qty;
-            subtotal += p.discountedPrice * qty;
-            totalDiscount += (p.price - p.discountedPrice) * qty;
-        });
+                // Ensure prices are numbers
+                const price = parseFloat(p.price) || 0;
+                const discountedPrice = parseFloat(p.discountedPrice) || 0;
+
+                totalMRP += price * qty;
+                subtotal += discountedPrice * qty;
+                totalDiscount += (price - discountedPrice) * qty;
+            });
+        }
 
         const totalAmount = subtotal + platformFee + shippingFee;
 
         res.render("cart", {
             userCart,
-            totalMRP,
-            totalDiscount,
+            totalMRP: totalMRP.toFixed(2),
+            totalDiscount: totalDiscount.toFixed(2),
             platformFee,
             shippingFee,
-            subtotal,
-            totalAmount
+            subtotal: subtotal.toFixed(2),
+            totalAmount: totalAmount.toFixed(2)
         });
 
     } catch (err) {
         console.error("Error loading cart:", err);
         res.status(500).render("cart", {
             userCart: null,
-            totalMRP: 0,
-            totalDiscount: 0,
+            totalMRP: "0.00",
+            totalDiscount: "0.00",
             platformFee: 20,
             shippingFee: 0,
-            subtotal: 0,
-            totalAmount: 20,
+            subtotal: "0.00",
+            totalAmount: "20.00",
             error: "Something went wrong"
         });
     }
